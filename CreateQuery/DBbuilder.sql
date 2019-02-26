@@ -1,55 +1,58 @@
---create User table
-CREATE TABLE Users(
-  userName varchar(20) primary key,
-  lastName varchar(20),
-  firstName varchar(20),
-  gender varchar(10),
-  email varchar(30),
-  phone varchar(30)
+-- create User table
+CREATE TABLE Users (
+    userName VARCHAR(20) PRIMARY KEY,
+    lastName VARCHAR(20),
+    firstName VARCHAR(20),
+    gender VARCHAR(10),
+    email VARCHAR(30) UNIQUE,
+    phone VARCHAR(30) UNIQUE
 );
 
---create creditcards table
-CREATE TABLE creditcards(
-  cardNumber varchar(20) primary key,
-  holderName varchar(30),
-  issuer varchar(20),
-  expiryDate date,
-  uid varchar(20) not null ,
-  foreign key (uid) references Users(userName)
+-- create creditcards table
+CREATE TABLE creditcards (
+    cardNumber VARCHAR(20) PRIMARY KEY,
+    holderName VARCHAR(30),
+    issuer VARCHAR(20),
+    expiryDate DATE,
+    uid VARCHAR(20) NOT NULL,
+    FOREIGN KEY (uid)
+        REFERENCES Users (userName)
 );
 
-CREATE TABLE vehicles(
-  vehicleID SERIAL primary key,
-  model varchar(15),
-  color varchar(15),
-  licensePlate varchar(15)
+CREATE TABLE vehicles (
+    vehicleID SERIAL PRIMARY KEY,
+    model VARCHAR(15),
+    color VARCHAR(15),
+    licensePlate VARCHAR(15)
 );
 
-CREATE TABLE Trips(
-  tripId SERIAL primary key,
-  numberOfSeatsAvailable integer,
-  title text,
-  startTime timestamp,
-  startLocation varchar(20),
-  price float
+CREATE TABLE Trips (
+    tripId SERIAL PRIMARY KEY,
+    numberOfSeatsAvailable INTEGER,
+    title TEXT,
+    startTime TIMESTAMP,
+    startLocation VARCHAR(20),
+    price FLOAT
 );
 
 
-create table comments(
-  commentID serial primary key,
-  posttime timestamp,
-  content text,
-  rating int,
-  uid varchar(20) not null,
-  tripid int not null,
-  foreign key (uid) references Passengers(userName),
-  foreign key (tripid) references Trips(tripId)
+CREATE TABLE comments (
+    commentID SERIAL PRIMARY KEY,
+    posttime TIMESTAMP,
+    content TEXT,
+    rating INT,
+    uid VARCHAR(20) NOT NULL,
+    tripid INT NOT NULL,
+    FOREIGN KEY (uid)
+        REFERENCES Passengers (userName),
+    FOREIGN KEY (tripid)
+        REFERENCES Trips (tripId)
 );
 
-create table Cities(
-  cityId serial primary key,
-  population_Density bigint,
-  cityname varchar(20)
+CREATE TABLE Cities (
+    cityId SERIAL PRIMARY KEY,
+    population_Density BIGINT,
+    cityname VARCHAR(20)
 );
 
 create table Drivers(
@@ -57,60 +60,70 @@ create table Drivers(
   driverLicense varchar(20),
   status varchar(20),
   overallRating float
-)inherits (Users);
+) INHERITS (Users);
 
-create table Admins(
-  userName varchar(20) unique,
-  cityID int not null,
-  foreign key (cityID) references Cities(cityId)
-)inherits(Users);
+CREATE TABLE Admins (
+    userName VARCHAR(20) UNIQUE,
+    cityID INT NOT NULL,
+    FOREIGN KEY (cityID)
+        REFERENCES Cities (cityId)
+) INHERITS (Users);
 
 
-create table Passengers(
-  userName varchar(20) unique,
-  homelocation varchar(30),
-  workLocation varchar(30)
-)inherits(Users);
+CREATE TABLE Passengers (
+    userName VARCHAR(20) UNIQUE,
+    homelocation VARCHAR(30),
+    workLocation VARCHAR(30)
+) INHERITS (Users);
 
-create table Stops(
-  cityID int,
-  stopName varchar(30),
-  primary key (cityID, stopName),
-  foreign key (cityId) references Cities(cityID)
+CREATE TABLE Stops (
+    cityID INT,
+    stopName VARCHAR(30),
+    PRIMARY KEY (cityID , stopName),
+    FOREIGN KEY (cityId)
+        REFERENCES Cities (cityID)
 );
 
-create table hasStops(
-  tripid int not null ,
-  cityID int,
-  stopName varchar(30),
-  primary key (tripid,cityID,stopName),
-  foreign key (tripid) references Trips(tripid),
-  foreign key (cityID,stopName) references Stops(cityID,stopName)
+CREATE TABLE hasStops (
+    tripid INT NOT NULL,
+    cityID INT,
+    stopName VARCHAR(30),
+    PRIMARY KEY (tripid , cityID , stopName),
+    FOREIGN KEY (tripid)
+        REFERENCES Trips (tripid),
+    FOREIGN KEY (cityID , stopName)
+        REFERENCES Stops (cityID , stopName)
 );
 
-create table leads(
-  advtime timestamp not null,
-  vehicleID int,
-  uid varchar(20),
-  tripId int,
-  primary key (tripid),
-  foreign key (vehicleID) references vehicles(vehicleID),
-  foreign key (uid) references Drivers(userName),
-  foreign key (tripid) references Trips(tripId)
+CREATE TABLE leads (
+    advtime TIMESTAMP NOT NULL,
+    vehicleID INT,
+    uid VARCHAR(20),
+    tripId INT,
+    PRIMARY KEY (tripid),
+    FOREIGN KEY (vehicleID)
+        REFERENCES vehicles (vehicleID),
+    FOREIGN KEY (uid)
+        REFERENCES Drivers (userName),
+    FOREIGN KEY (tripid)
+        REFERENCES Trips (tripId)
 );
 
-create table books(
-  booktime timestamp not null,
-  cardNumber varchar(20),
-  tripid int,
-  uid varchar(20),
-  primary key (uid,tripid,cardNumber),
-  foreign key (uid) references Passengers(userName),
-  foreign key (tripid) references Trips(tripid),
-  foreign key (cardNumber) references creditcards(cardNumber)
+CREATE TABLE books (
+    booktime TIMESTAMP NOT NULL,
+    cardNumber VARCHAR(20),
+    tripid INT,
+    uid VARCHAR(20),
+    PRIMARY KEY (uid , tripid , cardNumber),
+    FOREIGN KEY (uid)
+        REFERENCES Passengers (userName),
+    FOREIGN KEY (tripid)
+        REFERENCES Trips (tripid),
+    FOREIGN KEY (cardNumber)
+        REFERENCES creditcards (cardNumber)
 );
 
---test data
+-- test data
 insert into vehicles values(default,'AudiA8','Black','768XU2');
 insert into vehicles values(default,'AudiA4','Black','777969');
 insert into trips values(default,8,'A trip to NYC',TIMESTAMP'07/02/19 10:20:00','Montreal',69.5);
