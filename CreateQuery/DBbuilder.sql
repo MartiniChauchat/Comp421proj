@@ -1,4 +1,5 @@
 -- drop all tables (only for testing)
+DROP TABLE IF EXISTS Manages;
 DROP TABLE IF EXISTS Books;
 DROP TABLE IF EXISTS Leads;
 DROP TABLE IF EXISTS HasStops;
