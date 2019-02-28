@@ -37,6 +37,14 @@ CREATE TABLE Drivers(
   status varchar(20)
 ) INHERITS (Users);
 
+-- create Admins table
+CREATE TABLE Admins (
+    userName VARCHAR(20) UNIQUE,
+    cityID INT,
+    FOREIGN KEY (cityID)
+        REFERENCES Cities (cityId)
+) INHERITS (Users);
+
 -- create CreditCards table
 CREATE TABLE CreditCards (
     cardNumber VARCHAR(20) PRIMARY KEY,
@@ -51,8 +59,12 @@ CREATE TABLE CreditCards (
 -- create HoldCards table
 CREATE TABLE HoldCards (
     cardNumber VARCHAR(20),
-    userName VARCHAR(20),
-    PRIMARY KEY (cardNumber, userName)
+    userName VARCHAR(20) NOT NULL,
+    PRIMARY KEY (cardNumber)
+    FOREIGN KEY (cardNumber)
+        REFERENCES CreditCards (cardNumber)
+    FOREIGN KEY (userName)
+        REFERENCES Users (userName)
 )
 
 -- create Vehicles table
@@ -64,16 +76,6 @@ CREATE TABLE Vehicles (
     owner VARCHAR(20),
     FOREIGN KEY (owner)
         REFERENCES Drivers(userName)
-);
-
--- create Trips table
-CREATE TABLE Trips (
-    tripId SERIAL PRIMARY KEY,
-    numberOfSeatsAvailable INTEGER,
-    title TEXT,
-    startTime TIMESTAMP,
-    startLocation VARCHAR(20),
-    price FLOAT
 );
 
 -- create Comments table
@@ -90,19 +92,21 @@ CREATE TABLE Comments (
         REFERENCES Trips (tripId)
 );
 
+-- create Trips table
+CREATE TABLE Trips (
+    tripId SERIAL PRIMARY KEY,
+    numberOfSeatsAvailable INTEGER,
+    title TEXT,
+    startTime TIMESTAMP,
+    startLocation VARCHAR(20),
+    price FLOAT
+);
+
 -- create Cities table
 CREATE TABLE Cities (
     cityId SERIAL PRIMARY KEY,
     cityName VARCHAR(20)
 );
-
--- create Admins table
-CREATE TABLE Admins (
-    userName VARCHAR(20) UNIQUE,
-    cityID INT,
-    FOREIGN KEY (cityID)
-        REFERENCES Cities (cityId)
-) INHERITS (Users);
 
 -- create Stops table
 CREATE TABLE Stops (
@@ -154,3 +158,14 @@ CREATE TABLE Books (
     FOREIGN KEY (cardNumber)
         REFERENCES creditcards (cardNumber)
 );
+
+-- create Manages taable
+CREATE TABLE Manages (
+    adminName VARCHAR(20),
+    cityId INT NOT NULL,
+    PRIMARY KEY (adminName),
+    FOREIGN KEY (adminName)
+        REFERENCES Admins (userName),
+    FOREIGN KEY (cityId)
+        REFERENCES Cities (cityId)
+)
