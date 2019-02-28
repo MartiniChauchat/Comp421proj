@@ -83,14 +83,14 @@ CREATE TABLE Trips (
 -- create Comments table
 CREATE TABLE Comments (
     commentID SERIAL PRIMARY KEY,
-    posttime TIMESTAMP,
+    postTime TIMESTAMP,
     content TEXT,
     rating INT,
     uid VARCHAR(20) NOT NULL,
-    tripid INT NOT NULL,
+    tripId INT NOT NULL,
     FOREIGN KEY (uid)
         REFERENCES Passengers (userName),
-    FOREIGN KEY (tripid)
+    FOREIGN KEY (tripId)
         REFERENCES Trips (tripId)
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE HasStops (
     stopName VARCHAR(30),
     cityId INT,
     PRIMARY KEY (tripId , cityId , stopName),
-    FOREIGN KEY (tripid)
+    FOREIGN KEY (tripId)
         REFERENCES Trips (tripId),
     FOREIGN KEY (cityId, stopName)
         REFERENCES Stops (cityId, stopName)
@@ -146,7 +146,7 @@ CREATE TABLE Leads (
 
 -- create Books table
 CREATE TABLE Books (
-    booktime TIMESTAMP,
+    bookTime TIMESTAMP,
     cardNumber VARCHAR(30),
     tripId INT,
     uid VARCHAR(20),
