@@ -76,7 +76,7 @@ CREATE TABLE Vehicles (
     licensePlate VARCHAR(15),
     owner VARCHAR(20),
     FOREIGN KEY (owner)
-        REFERENCES Drivers(userName)
+        REFERENCES Drivers (userName)
 );
 
 -- create Comments table
@@ -121,9 +121,9 @@ CREATE TABLE Stops (
 -- create HasStops table
 CREATE TABLE HasStops (
     tripId INT,
-    cityId INT,
     stopName VARCHAR(30),
-    PRIMARY KEY (tripid , cityId , stopName),
+    cityId INT,
+    PRIMARY KEY (tripId , cityId , stopName),
     FOREIGN KEY (tripid)
         REFERENCES Trips (tripId),
     FOREIGN KEY (cityId, stopName)
@@ -169,4 +169,4 @@ CREATE TABLE Manages (
         REFERENCES Admins (userName),
     FOREIGN KEY (cityId)
         REFERENCES Cities (cityId)
-)
+);
