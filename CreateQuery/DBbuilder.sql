@@ -9,8 +9,8 @@ DROP TABLE IF EXISTS Cities;
 DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS Trips;
 DROP TABLE IF EXISTS Vehicles;
-DROP TABLE IF EXISTS CreditCards;
 DROP TABLE IF EXISTS HoldCards;
+DROP TABLE IF EXISTS CreditCards;
 DROP TABLE IF EXISTS Drivers;
 DROP TABLE IF EXISTS Passengers;
 DROP TABLE IF EXISTS Users;
@@ -38,14 +38,6 @@ CREATE TABLE Drivers(
   status varchar(20)
 ) INHERITS (Users);
 
--- create Admins table
-CREATE TABLE Admins (
-    userName VARCHAR(20) UNIQUE,
-    cityID INT,
-    FOREIGN KEY (cityID)
-        REFERENCES Cities (cityId)
-) INHERITS (Users);
-
 -- create CreditCards table
 CREATE TABLE CreditCards (
     cardNumber VARCHAR(20) PRIMARY KEY,
@@ -59,14 +51,13 @@ CREATE TABLE CreditCards (
 
 -- create HoldCards table
 CREATE TABLE HoldCards (
-    cardNumber VARCHAR(20),
+    cardNumber VARCHAR(20) PRIMARY KEY ,
     userName VARCHAR(20) NOT NULL,
-    PRIMARY KEY (cardNumber)
     FOREIGN KEY (cardNumber)
-        REFERENCES CreditCards (cardNumber)
+        REFERENCES CreditCards (cardNumber),
     FOREIGN KEY (userName)
         REFERENCES Users (userName)
-)
+);
 
 -- create Vehicles table
 CREATE TABLE Vehicles (
@@ -77,6 +68,16 @@ CREATE TABLE Vehicles (
     owner VARCHAR(20),
     FOREIGN KEY (owner)
         REFERENCES Drivers (userName)
+);
+
+-- create Trips table
+CREATE TABLE Trips (
+    tripId SERIAL PRIMARY KEY,
+    numberOfSeatsAvailable INTEGER,
+    title TEXT,
+    startTime TIMESTAMP,
+    startLocation VARCHAR(20),
+    price FLOAT
 );
 
 -- create Comments table
@@ -93,21 +94,19 @@ CREATE TABLE Comments (
         REFERENCES Trips (tripId)
 );
 
--- create Trips table
-CREATE TABLE Trips (
-    tripId SERIAL PRIMARY KEY,
-    numberOfSeatsAvailable INTEGER,
-    title TEXT,
-    startTime TIMESTAMP,
-    startLocation VARCHAR(20),
-    price FLOAT
-);
-
 -- create Cities table
 CREATE TABLE Cities (
     cityId SERIAL PRIMARY KEY,
     cityName VARCHAR(20)
 );
+
+-- create Admins table
+CREATE TABLE Admins (
+    userName VARCHAR(20) UNIQUE,
+    cityID INT,
+    FOREIGN KEY (cityID)
+        REFERENCES Cities (cityId)
+) INHERITS (Users);
 
 -- create Stops table
 CREATE TABLE Stops (
