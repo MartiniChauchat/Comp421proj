@@ -1,4 +1,4 @@
--- DROP all tables (for test)
+-- drop all tables (only for testing)
 DROP TABLE IF EXISTS Books;
 DROP TABLE IF EXISTS Leads;
 DROP TABLE IF EXISTS HasStops;
@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS Trips;
 DROP TABLE IF EXISTS Vehicles;
 DROP TABLE IF EXISTS CreditCards;
+DROP TABLE IF EXISTS HoldCards;
 DROP TABLE IF EXISTS Drivers;
 DROP TABLE IF EXISTS Passengers;
 DROP TABLE IF EXISTS Users;
@@ -46,6 +47,13 @@ CREATE TABLE CreditCards (
     FOREIGN KEY (uid)
         REFERENCES Users (userName)
 );
+
+-- create HoldCards table
+CREATE TABLE HoldCards (
+    cardNumber VARCHAR(20),
+    userName VARCHAR(20),
+    PRIMARY KEY (cardNumber, userName)
+)
 
 -- create Vehicles table
 CREATE TABLE Vehicles (
@@ -85,64 +93,64 @@ CREATE TABLE Comments (
 -- create Cities table
 CREATE TABLE Cities (
     cityId SERIAL PRIMARY KEY,
-    cityname VARCHAR(20)
+    cityName VARCHAR(20)
 );
 
 -- create Admins table
 CREATE TABLE Admins (
     userName VARCHAR(20) UNIQUE,
-    cityID INT NOT NULL,
+    cityID INT,
     FOREIGN KEY (cityID)
         REFERENCES Cities (cityId)
 ) INHERITS (Users);
 
 -- create Stops table
 CREATE TABLE Stops (
-    cityID INT,
+    cityId INT,
     stopName VARCHAR(30),
-    PRIMARY KEY (cityID , stopName),
+    PRIMARY KEY (cityId, stopName),
     FOREIGN KEY (cityId)
-        REFERENCES Cities (cityID)
+        REFERENCES Cities (cityId)
 );
 
 -- create HasStops table
 CREATE TABLE HasStops (
-    tripid INT NOT NULL,
-    cityID INT,
+    tripId INT,
+    cityId INT,
     stopName VARCHAR(30),
-    PRIMARY KEY (tripid , cityID , stopName),
+    PRIMARY KEY (tripid , cityId , stopName),
     FOREIGN KEY (tripid)
-        REFERENCES Trips (tripid),
-    FOREIGN KEY (cityID , stopName)
-        REFERENCES Stops (cityID , stopName)
+        REFERENCES Trips (tripId),
+    FOREIGN KEY (cityId, stopName)
+        REFERENCES Stops (cityId, stopName)
 );
 
 -- create Leads table
 CREATE TABLE Leads (
-    advtime TIMESTAMP NOT NULL,
-    vehicleID INT,
+    postTime TIMESTAMP,
+    vehicleId INT,
     uid VARCHAR(20),
     tripId INT,
-    PRIMARY KEY (tripid),
-    FOREIGN KEY (vehicleID)
-        REFERENCES vehicles (vehicleID),
+    PRIMARY KEY (tripId),
+    FOREIGN KEY (tripId)
+        REFERENCES Trips (tripId),
+    FOREIGN KEY (vehicleId)
+        REFERENCES vehicles (vehicleId),
     FOREIGN KEY (uid)
-        REFERENCES Drivers (userName),
-    FOREIGN KEY (tripid)
-        REFERENCES Trips (tripId)
+        REFERENCES Drivers (userName)
 );
 
 -- create Books table
 CREATE TABLE Books (
-    booktime TIMESTAMP NOT NULL,
-    cardNumber VARCHAR(20),
-    tripid INT,
+    booktime TIMESTAMP,
+    cardNumber VARCHAR(30),
+    tripId INT,
     uid VARCHAR(20),
-    PRIMARY KEY (uid , tripid , cardNumber),
+    PRIMARY KEY (uid , tripId , cardNumber),
     FOREIGN KEY (uid)
         REFERENCES Passengers (userName),
-    FOREIGN KEY (tripid)
-        REFERENCES Trips (tripid),
+    FOREIGN KEY (tripId)
+        REFERENCES Trips (tripId),
     FOREIGN KEY (cardNumber)
         REFERENCES creditcards (cardNumber)
 );
