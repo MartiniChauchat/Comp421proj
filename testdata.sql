@@ -57,6 +57,12 @@ insert into trips values(default, 2, 'Go to Ottawa',TIMESTAMP'07/11/19 10:20:00'
 insert into trips values(default,3,'A trip to Toronto',TIMESTAMP'07/12/19 10:20:00','Montreal',80.5);
 insert into trips values(default, 4, 'Go to Vancouver',TIMESTAMP'07/13/19 10:20:00','Surrey',99.5);
 insert into trips values(default,5,'A trip to Chicago',TIMESTAMP'07/14/19 10:20:00','NewYork',92.5);
+insert into trips values(default, 6, 'From Paris to Amsterdam', TIMESTAMP'01/12/19 03:25:00', 'Paris', 60.5);
+insert into trips values(default, 5, 'From Istanbul to Budapest', TIMESTAMP'03/21/19 07:33:00', 'Istanbul', 70.5);
+insert into trips values(default, 6, 'From Shenzhen(Guannei) to Nanjing', TIMESTAMP'05/15/19 18:50:00', 'Shenzhen', 280.8);
+insert into trips values(default, 3, 'From Manchester to Liverpool', TIMESTAMP'11/09/19 10:24:00', 'Manchester', 101.0);
+insert into trips values(default, 4, 'From Suzhou to Nanchang', TIMESTAMP'08/08/19 13:03:03', 'Suzhou', 123.3);
+insert into trips values(default, 12, 'From White Rock to Burnaby', TIMESTAMP'02/14/19 18:00:00', 'White Rock', 250.5);
 
 --data for comments:
 insert into comments values(default,'07/21/19 10:20:00','This is a very bad driver!',3,'Oppo123',1);
