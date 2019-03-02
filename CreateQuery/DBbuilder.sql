@@ -43,10 +43,7 @@ CREATE TABLE CreditCards (
     cardNumber VARCHAR(20) PRIMARY KEY,
     holderName VARCHAR(30),
     issuer VARCHAR(20),
-    expiryDate DATE,
-    uid VARCHAR(20) NOT NULL,
-    FOREIGN KEY (uid)
-        REFERENCES Users (userName)
+    expiryDate DATE
 );
 
 -- create HoldCards table
@@ -56,7 +53,7 @@ CREATE TABLE HoldCards (
     FOREIGN KEY (cardNumber)
         REFERENCES CreditCards (cardNumber),
     FOREIGN KEY (userName)
-        REFERENCES Users (userName)
+        REFERENCES Passengers(userName)
 );
 
 -- create Vehicles table
@@ -102,10 +99,7 @@ CREATE TABLE Cities (
 
 -- create Admins table
 CREATE TABLE Admins (
-    userName VARCHAR(20) UNIQUE,
-    cityID INT,
-    FOREIGN KEY (cityID)
-        REFERENCES Cities (cityId)
+    userName VARCHAR(20) UNIQUE
 ) INHERITS (Users);
 
 -- create Stops table
